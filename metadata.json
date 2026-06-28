@@ -1,0 +1,6 @@
+{
+  "name": "LOCKTFIN",
+  "description": "Personal IBDP & IPMAT study tracker featuring task management, Pomodoro/session study timer, study history, detailed syllabus completion tracking, analytics, settings, and cloud sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

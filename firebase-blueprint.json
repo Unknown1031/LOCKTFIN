@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents the student profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Represents a study subject and its cumulative study time",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "totalStudyTime": { "type": "number" }
+      },
+      "required": ["userId", "code", "name", "totalStudyTime"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A study or homework task related to a subject",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "subjectCode": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "subjectCode", "title", "dueDate", "priority", "completed", "createdAt"]
+    },
+    "Assignment": {
+      "title": "Assignment",
+      "description": "A long-term assignment like an IA draft, project, homework, or test",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "subjectCode": { "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["ia_draft", "homework", "project", "test", "deadline"] },
+        "description": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "completed": { "type": "boolean" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "subjectCode", "title", "type", "dueDate", "completed", "createdAt"]
+    },
+    "StudySession": {
+      "title": "StudySession",
+      "description": "A recorded study timer session",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "subject": { "type": "string" },
+        "sessionName": { "type": "string" },
+        "duration": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" }
+      },
+      "required": ["userId", "subject", "sessionName", "duration", "createdAt", "date", "startTime"]
+    },
+    "IpmatProgress": {
+      "title": "IpmatProgress",
+      "description": "Tracks syllabus completion for an IPMAT chapter",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "sectionCode": { "type": "string" },
+        "chapterId": { "type": "string" },
+        "bookCompleted": { "type": "boolean" },
+        "worksheetCompleted": { "type": "boolean" }
+      },
+      "required": ["userId", "sectionCode", "chapterId", "bookCompleted", "worksheetCompleted"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "User preferences",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "theme": { "type": "string", "enum": ["light", "dark", "system"] }
+      },
+      "required": ["userId", "theme"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User records"
+    },
+    "/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "User subjects and study times"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Tasks associated with subjects"
+    },
+    "/assignments/{assignmentId}": {
+      "schema": "Assignment",
+      "description": "Long term Assignments (IAs, Homework, etc) associated with subjects"
+    },
+    "/study_sessions/{sessionId}": {
+      "schema": "StudySession",
+      "description": "Completed study sessions"
+    },
+    "/ipmat_progress/{progressId}": {
+      "schema": "IpmatProgress",
+      "description": "IPMAT chapter completion progress"
+    },
+    "/settings/{userId}": {
+      "schema": "Settings",
+      "description": "User preferences and settings"
+    }
+  }
+}

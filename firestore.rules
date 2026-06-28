@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper to check if a document's owner is the authenticated user
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper to validate document fields on create/update
+    function isDocOwner(data) {
+      return isAuthenticated() && data != null && data.userId == request.auth.uid;
+    }
+
+    // Rules for Users collection
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Rules for Settings collection
+    match /settings/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Rules for Subjects collection
+    match /subjects/{subjectId} {
+      allow read, delete: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create, update: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Rules for Tasks collection
+    match /tasks/{taskId} {
+      allow read, delete: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create, update: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Rules for Assignments collection
+    match /assignments/{assignmentId} {
+      allow read, delete: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create, update: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Rules for Study Sessions collection
+    match /study_sessions/{sessionId} {
+      allow read, delete: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create, update: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Rules for IPMAT Progress collection
+    match /ipmat_progress/{progressId} {
+      allow read, delete: if isAuthenticated() && (resource == null || resource.data.userId == request.auth.uid);
+      allow create, update: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}
